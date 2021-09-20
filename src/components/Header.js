@@ -4,7 +4,8 @@ import { HeaderNav ,Logo,Menu} from '../Styles/Header.styles'
 import { Container,Flex} from '../Styles/GlobalStyles'
 import { TOGGLE_THEME,useGlobalStateContext, useGlobalDispatchContext } from '../Context/GlobalContext'
 
-const Header = () => {
+const Header = ({onCursor}) => {
+
     const dispatch = useGlobalDispatchContext()
     const {currentTheme} = useGlobalStateContext()
 
@@ -45,11 +46,17 @@ const Header = () => {
             }}>
             <Container >
                 <Flex spaceBetween noHeight>
-                    <Logo>
+                    <Logo
+                        onMouseEnter = {() => onCursor('hovered')}
+                        onMouseLeave = {onCursor}
+                    >
                         <Link to = "/">
                             HAR
                         </Link>
-                        <span onClick = {toggleTheme}></span>
+                        <span 
+                        onMouseEnter = {() => onCursor('pointer')}
+                        onMouseLeave = {onCursor}
+                        onClick = {toggleTheme}></span>
                         <Link to = "/">
                             SHH
                         </Link>

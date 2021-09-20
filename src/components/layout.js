@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
@@ -6,20 +6,20 @@ import { useStaticQuery, graphql } from "gatsby"
 import {createGlobalStyle, ThemeProvider} from 'styled-components'
 import {normalize} from 'styled-normalize'
 
-
 //import components
 import Header from "./Header"
+import CustomCursor from "./CustomCursor"
 
 //importing context
-import { useGlobalStateContext } from "../Context/GlobalContext"
-
+import { useGlobalStateContext, useGlobalDispatchContext, TOGGLE_THEME} from "../Context/GlobalContext"
+import { TOGGLE_CURSOR } from "../Context/GlobalContext"
 //creating global styles
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
   *{
     text-decoration: none;
-    /* cursor: none; */
+    cursor: none;
   }
   
   html{
@@ -35,6 +35,7 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
   }
 `
+
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -59,15 +60,28 @@ const Layout = ({ children }) => {
     red: '#ea291e'
   }
 
-  
+  const {currentTheme, cursorStyle} = useGlobalStateContext()
+  const dispatch = useGlobalDispatchContext()
 
-  const {currentTheme} = useGlobalStateContext()
+  const onCursor = (cursorType) => {
+
+    cursorType = (cursorStyle.includes(cursorType) && cursorType) || false
+
+    dispatch(
+      {
+        type: TOGGLE_CURSOR,
+        cursorType: cursorType
+      }
+    )
+  }
+
 
   return (
     <ThemeProvider theme = {currentTheme === "dark" ? darkTheme
           : lightTheme}>
     <GlobalStyle />
-    <Header />
+    <CustomCursor />
+    <Header onCursor = {onCursor}/>
     <main>{children}</main>
     </ThemeProvider>
   )
