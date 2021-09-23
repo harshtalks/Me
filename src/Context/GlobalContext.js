@@ -35,7 +35,7 @@ export const GlobalProvider = ({children}) => {
         const [state,dispatch] = useReducer(GlobalReducer, {
             currentTheme: window.localStorage.getItem('theme') === null ? 'dark': window.localStorage.getItem('theme'),
             cursorType: false,
-            cursorStyle: ['pointer', 'hovered']
+            cursorStyle: ['pointer', 'hovered', 'locked']
         })
 
         return (

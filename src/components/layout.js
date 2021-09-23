@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
@@ -9,10 +9,12 @@ import {normalize} from 'styled-normalize'
 //import components
 import Header from "./Header"
 import CustomCursor from "./CustomCursor"
+import Navigation from "./Navigation"
 
 //importing context
 import { useGlobalStateContext, useGlobalDispatchContext, TOGGLE_THEME} from "../Context/GlobalContext"
 import { TOGGLE_CURSOR } from "../Context/GlobalContext"
+import Footer from "./Footer"
 //creating global styles
 
 const GlobalStyle = createGlobalStyle`
@@ -48,16 +50,26 @@ const Layout = ({ children }) => {
     }
   `)
 
+  const [hamPos, setHamPos] = useState({
+    x: 0,
+    y:0
+  })
+  
   const darkTheme = {
     background: '#000',
     text: '#fff',
-    red: '#ea291e'
+    red: '#ea291e',
+    left: `${hamPos.x}px`,
+    top: `${hamPos.y}px`
+
   }
 
   const lightTheme = {
     background: '#fff',
     text: '#000',
-    red: '#ea291e'
+    red: '#ea291e',
+    left: `${hamPos.x}px`,
+    top: `${hamPos.y}px`
   }
 
   const {currentTheme, cursorStyle} = useGlobalStateContext()
@@ -75,14 +87,21 @@ const Layout = ({ children }) => {
     )
   }
 
+  const  [toggleMenu, setToggleMenu] = useState(false)
+
+
 
   return (
     <ThemeProvider theme = {currentTheme === "dark" ? darkTheme
           : lightTheme}>
     <GlobalStyle />
-    <CustomCursor />
-    <Header onCursor = {onCursor}/>
+    <CustomCursor toggleMenu = {toggleMenu}/>
+    <Header onCursor = {onCursor} toggleMenu = {toggleMenu} setToggleMenu = {setToggleMenu} 
+    hamPos = {hamPos} setHamPos = {setHamPos}
+    />
+    <Navigation toggleMenu = {toggleMenu} setToggleMenu = {setToggleMenu}  onCursor = {onCursor}/>
     <main>{children}</main>
+    <Footer onCursor = {onCursor} />
     </ThemeProvider>
   )
 }

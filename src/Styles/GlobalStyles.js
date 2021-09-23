@@ -1,7 +1,7 @@
 import styled, {css} from 'styled-components'
 
 export const Container = styled.div`
-    flex-grow: 1;
+   flex-grow: 1;
     margin: 0 auto;
     padding: 0 32px;
     position: relative;
@@ -71,5 +71,19 @@ export const Cursor = styled.div`
         width: 56px;
         height: 56px;
         border: 4px solid ${props => props.theme.red}
+    }
+
+     &.nav-open{
+        background: ${props => props.theme.text};
+       
+    }
+
+    &.locked{
+        background: transparent !important;
+        width: 56px;
+        height: 56px;
+        border: 4px solid ${props => props.theme.red};
+        top: ${props => props.theme.top} !important;
+        left: ${props => props.theme.left}
     }
 `
